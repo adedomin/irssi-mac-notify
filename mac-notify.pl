@@ -24,7 +24,7 @@ our %IRSSI = (
 	authors     => 'prussian',
 	contact     => 'genunrest@gmail.com',
 	name        => 'mac-notify',
-	description => 'Sends notifications using OS X specific terminal-notifier command. Due to invokation of system(), it may be dangerous',
+	description => 'Sends notifications using macOS|OS X specific terminal-notifier command. Due to invokation of system(), it may be dangerous',
 	license     => 'Apache 2.0',
 );
 

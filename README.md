@@ -1,20 +1,20 @@
 For
 ---
 
-OS X - Irssi
+macOS (OS X) - Irssi
 
-Irssi is pretty much the only good irc client I know of for OS X
+Irssi is pretty much the only good irc client I know of for macOS
 
 Depends
 -------
 
 The Following binaries should be findable in your \$PATH.
 
-    terminal-notify
+    terminal-notifier
 
 Get with homebrew.
     
-    brew install terminal-notify
+    brew install terminal-notifier
 
 Warnings
 --------
