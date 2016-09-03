@@ -28,20 +28,22 @@ our %IRSSI = (
 	license     => 'Apache 2.0',
 );
 
-sub priv_msg {
+sub privmsg {
 	my ($server, $msg, $nick, $address) = @_;
 
     my $pid = fork();
     if ($pid == 0) {
+        # "\\". is because terminal notifier is weird
+        # adding this fixes it from throwing fits
         exec("terminal-notifier", "-message", "\\".$msg, "-title","\\".$nick);
     }
 }
 
-sub hilight {
+sub highlight {
 	my ($dest, $text, $msg) = @_;
 	my $server = $dest->{server};
 
-	# Check if we should notify user of message:
+	# Check if we should notify user of message
 	# if message is notice or highligh type
 	# if the channel belongs to the current server
 	if (!($server &&
@@ -52,9 +54,11 @@ sub hilight {
 
     my $pid = fork();
     if ($pid == 0) {
+        # "\\". is because terminal notifier is weird
+        # adding this fixes it from throwing fits
         exec("terminal-notifier", "-message", "\\".$msg, "-title", "\\".$dest->{target});
     }
 }
 
-Irssi::signal_add_last('message private' => \&priv_msg);
-Irssi::signal_add_last('print text' => \&hilight);
+Irssi::signal_add_last('message private' => \&privmsg);
+Irssi::signal_add_last('print text' => \&highlight);
