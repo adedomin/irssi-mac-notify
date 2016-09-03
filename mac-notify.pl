@@ -25,7 +25,7 @@ our %IRSSI = (
 	contact     => 'genunrest@gmail.com',
 	name        => 'mac-notify',
 	description => 'Sends notifications using OS X specific terminal-notifier command. Due to invokation of system(), it may be dangerous',
-	license     => 'GPL v3+',
+	license     => 'Apache 2.0',
 );
 
 sub priv_msg {
