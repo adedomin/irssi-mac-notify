@@ -19,7 +19,7 @@
 use strict;
 use Irssi;
 
-our $VERSION = '1.0.0';
+our $VERSION = '1.1.0';
 our %IRSSI = (
 	authors     => 'prussian',
 	contact     => 'genunrest@gmail.com',
@@ -33,7 +33,7 @@ sub priv_msg {
 
     my $pid = fork();
     if ($pid == 0) {
-        exec("terminal-notifier", "-message", "'".$msg."'", "-title","'".$nick."'");
+        exec("terminal-notifier", "-message", "\\".$msg, "-title","\\".$nick);
     }
 }
 
@@ -52,7 +52,7 @@ sub hilight {
 
     my $pid = fork();
     if ($pid == 0) {
-        exec("terminal-notifier", "-message", "'".$msg."'", "-title", "'".$dest->{target}."'");
+        exec("terminal-notifier", "-message", "\\".$msg, "-title", "\\".$dest->{target});
     }
 }
 
