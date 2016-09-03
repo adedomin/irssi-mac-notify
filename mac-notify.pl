@@ -31,7 +31,10 @@ our %IRSSI = (
 sub priv_msg {
 	my ($server, $msg, $nick, $address) = @_;
 
-	system("terminal-notifier", "-message", "'".$msg."'", "-title", "'".$nick."'", ">> /dev/null 2>&1 &");
+    my $pid = fork();
+    if ($pid == 0) {
+        exec("terminal-notifier", "-message", "'".$msg."'", "-title","'".$nick."'");
+    }
 }
 
 sub hilight {
@@ -39,17 +42,18 @@ sub hilight {
 	my $server = $dest->{server};
 
 	# Check if we should notify user of message:
-	# * if message is notice or highligh type
-	# * if the channel belongs to the current server
-	# * if the user is not focused on the channel window
+	# if message is notice or highligh type
+	# if the channel belongs to the current server
 	if (!($server &&
 		  $dest->{level} & (MSGLEVEL_HILIGHT | MSGLEVEL_NOTICES) &&
 		  $server->ischannel($dest->{target}))) {
 		return;
 	}
 
-	my $network = $server->{tag};
-	system("terminal-notifier", "-message", "'".$msg."'", "-title", "'".$dest->{target}."'", ">> /dev/null 2>&1 &");
+    my $pid = fork();
+    if ($pid == 0) {
+        exec("terminal-notifier", "-message", "'".$msg."'", "-title", "'".$dest->{target}."'");
+    }
 }
 
 Irssi::signal_add_last('message private' => \&priv_msg);
