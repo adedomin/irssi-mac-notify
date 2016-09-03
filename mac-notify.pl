@@ -21,15 +21,15 @@ use Irssi;
 
 our $VERSION = '1.1.0';
 our %IRSSI = (
-	authors     => 'prussian',
-	contact     => 'genunrest@gmail.com',
-	name        => 'mac-notify',
-	description => 'Sends notifications for macOS, see README.md',
-	license     => 'Apache 2.0',
+    authors     => 'prussian',
+    contact     => 'genunrest@gmail.com',
+    name        => 'mac-notify',
+    description => 'Sends notifications for macOS, see README.md',
+    license     => 'Apache 2.0',
 );
 
 sub privmsg {
-	my ($server, $msg, $nick, $address) = @_;
+    my ($server, $msg, $nick, $address) = @_;
 
     my $pid = fork();
     if ($pid == 0) {
@@ -40,17 +40,17 @@ sub privmsg {
 }
 
 sub highlight {
-	my ($dest, $text, $msg) = @_;
-	my $server = $dest->{server};
+    my ($dest, $text, $msg) = @_;
+    my $server = $dest->{server};
 
-	# Check if we should notify user of message
-	# if message is notice or highligh type
-	# if the channel belongs to the current server
-	if (!($server &&
-		  $dest->{level} & (MSGLEVEL_HILIGHT | MSGLEVEL_NOTICES) &&
-		  $server->ischannel($dest->{target}))) {
-		return;
-	}
+    # Check if we should notify user of message
+    # if message is notice or highligh type
+    # if the channel belongs to the current server
+    if (!($server &&
+          $dest->{level} & (MSGLEVEL_HILIGHT | MSGLEVEL_NOTICES) &&
+          $server->ischannel($dest->{target}))) {
+        return;
+    }
 
     my $pid = fork();
     if ($pid == 0) {
