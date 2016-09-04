@@ -18,6 +18,7 @@
 
 use strict;
 use Irssi;
+$SIG{CHILD} = sub { wait; };
 
 our $VERSION = '1.1.0';
 our %IRSSI = (

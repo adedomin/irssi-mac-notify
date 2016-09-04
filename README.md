@@ -19,11 +19,13 @@ Get with homebrew.
 Warnings
 --------
 
-Due to invocation of an external binary via exec(), it may be vulnerable to command execution?
+This creates a SHITLOAD of zombie processes, however caputring SIGCHLD in the script fails miserably.
+Using system() just makes the script stupidly slow if you have oever 80 highlights pending.
 
-I tested it and I can't seem to trigger any arbitrary code execution, but I may not have tried hard enough.
+    terminal-notifier -message fdfa -title fdafs  0.04s user 0.02s system 28% cpu 0.215 total
 
-If you know of a safer way of doing this, send a pull request or drop an issue.
+tl;dr I don't care anymore, it's OS X.
+If someone knows any decent perl modules that works with OS X notification center, I'll use that instead of some stupid, slow, binary intended for shell use.
 
 Other
 -----
