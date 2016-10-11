@@ -60,7 +60,6 @@ sub highlight {
         # adding this fixes it from throwing fits
         exec("terminal-notifier", "-message", "\\".$msg, "-title", "\\".$dest->{target});
     }
-    Irssi::pidwait_add($pid);
 }
 
 Irssi::signal_add_last('message private' => \&privmsg);
