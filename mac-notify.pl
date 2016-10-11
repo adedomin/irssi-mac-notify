@@ -18,7 +18,6 @@
 
 use strict;
 use Irssi;
-$SIG{CHILD} = sub { wait; };
 
 our $VERSION = '1.1.0';
 our %IRSSI = (
@@ -33,6 +32,7 @@ sub privmsg {
     my ($server, $msg, $nick, $address) = @_;
 
     my $pid = fork();
+    Irssi::pidwait_add($pid);
     if ($pid == 0) {
         # "\\". is because terminal notifier is weird
         # adding this fixes it from throwing fits
@@ -54,11 +54,13 @@ sub highlight {
     }
 
     my $pid = fork();
+    Irssi::pidwait_add($pid);
     if ($pid == 0) {
         # "\\". is because terminal notifier is weird
         # adding this fixes it from throwing fits
         exec("terminal-notifier", "-message", "\\".$msg, "-title", "\\".$dest->{target});
     }
+    Irssi::pidwait_add($pid);
 }
 
 Irssi::signal_add_last('message private' => \&privmsg);
