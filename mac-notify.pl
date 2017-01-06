@@ -15,6 +15,7 @@
 # NOTE:
 # This program requires terminal-notifier
 # can be aquired via homebrew (brew install terminal-notifier)
+# on linux, you need libnotify with a notifications server and notify-send
 
 use strict;
 use Irssi;
@@ -34,9 +35,12 @@ sub privmsg {
     my $pid = fork();
     Irssi::pidwait_add($pid);
     if ($pid == 0) {
-        # "\\". is because terminal notifier is weird
-        # adding this fixes it from throwing fits
-        exec("terminal-notifier", "-message", "\\".$msg, "-title","\\".$nick);
+        if ($^O eq "darwin") {
+            exec("terminal-notifier", "-message", "\\".$msg, "-title","\\".$nick);
+        }
+        else {
+            exec("notify-send", $nick, $msg);
+        }
     }
 }
 
@@ -56,9 +60,12 @@ sub highlight {
     my $pid = fork();
     Irssi::pidwait_add($pid);
     if ($pid == 0) {
-        # "\\". is because terminal notifier is weird
-        # adding this fixes it from throwing fits
-        exec("terminal-notifier", "-message", "\\".$msg, "-title", "\\".$dest->{target});
+        if ($^O eq "darwin") {
+            exec("terminal-notifier", "-message", "\\".$msg, "-title", "\\".$dest->{target});
+        }
+        else {
+            exec("notify-send", $dest->{target}, $msg);
+        }
     }
 }
 

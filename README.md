@@ -3,10 +3,14 @@ For
 
 macOS (OS X) - Irssi
 
+Generic System which implements GNOME Desktop Notifications.
+
 Irssi is pretty much the only good irc client I know of for macOS
 
 Depends
 -------
+
+### macOS
 
 The Following binaries should be findable in your \$PATH.
 
@@ -16,7 +20,10 @@ Get with homebrew.
     
     brew install terminal-notifier
 
-Other
------
+### other
 
-I know that the weird "\\". in front of the messages and title strings is confusing but apparently terminal-notifier has this weird issue where if you don't prepend a forward slash for some strings, it will cause it to error out which will break irssi by printing out this error into your window.
+The Following binaries should be findable in your \$PATH.
+
+    notify-send
+
+Get with your package manager, likely under some libnotify, notify-osd or whatever.
