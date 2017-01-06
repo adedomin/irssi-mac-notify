@@ -20,7 +20,7 @@
 use strict;
 use Irssi;
 
-our $VERSION = '1.1.0';
+our $VERSION = '2.0.0';
 our %IRSSI = (
     authors     => 'prussian',
     contact     => 'genunrest@gmail.com',
@@ -31,6 +31,12 @@ our %IRSSI = (
 
 sub privmsg {
     my ($server, $msg, $nick, $address) = @_;
+	my $window = Irssi::active_win();
+
+    # we are looking at the query window of this user
+	if ($window->{active}->{name} eq $nick) {
+		return;
+    }
 
     my $pid = fork();
     Irssi::pidwait_add($pid);
