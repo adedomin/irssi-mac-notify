@@ -31,11 +31,11 @@ our %IRSSI = (
 
 sub privmsg {
     my ($server, $msg, $nick, $address) = @_;
-	my $window = Irssi::active_win();
+    my $window = Irssi::active_win();
 
     # we are looking at the query window of this user
-	if ($window->{active}->{name} eq $nick) {
-		return;
+    if ($window->{active}->{name} eq $nick) {
+        return;
     }
 
     my $pid = fork();
@@ -58,8 +58,8 @@ sub highlight {
     # if message is notice or highligh type
     # if the channel belongs to the current server
     if (!($server &&
-          $dest->{level} & (MSGLEVEL_HILIGHT | MSGLEVEL_NOTICES) &&
-          $server->ischannel($dest->{target}))) {
+            $dest->{level} & (MSGLEVEL_HILIGHT | MSGLEVEL_NOTICES) &&
+            $server->ischannel($dest->{target}))) {
         return;
     }
 
