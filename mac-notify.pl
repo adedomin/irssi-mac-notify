@@ -29,30 +29,60 @@ our %IRSSI = (
     license     => 'Apache 2.0',
 );
 
-sub privmsg {
-    my ($server, $msg, $nick, $address) = @_;
-    my $window = Irssi::active_win();
+my $notify_chan;
+my $notify_priv;
+my $help = '
+/set notify_priv <level>
+/set notify_chan <level>
 
-    # we are looking at the query window of this user
-    if ($window->{active}->{name} eq $nick) {
-        return;
-    }
+where <level> is:
+    never  - never notify for these events
+    active - never notify for these events if the channel/user is the active window
+    always - anytime highlighed or private message, active window or not
+';
 
+sub setup {
+	$notify_chan = Irssi::settings_get_str('notify_chan');
+	$notify_priv = Irssi::settings_get_str('notify_priv');
+}
+
+sub send_notify {
+    my ($msg, $title) = @_;
     my $pid = fork();
     Irssi::pidwait_add($pid);
     if ($pid == 0) {
         if ($^O eq "darwin") {
-            exec("terminal-notifier", "-message", "\\".$msg, "-title","\\".$nick);
+            exec("terminal-notifier", "-message", "\\".$msg, "-title","\\".$title);
         }
         else {
-            exec("notify-send", $nick, $msg);
+            exec("notify-send", $title, $msg);
         }
     }
 }
 
+sub privmsg {
+    if ($notify_priv eq 'never') { 
+        return;
+    }
+    my ($server, $msg, $nick, $address) = @_;
+    my $window = Irssi::active_win();
+
+    # we are looking at the query window of this user
+    if ($notify_priv eq 'active' && 
+          $window->{active}->{name} eq $nick) {
+        return;
+    }
+    
+    send_notify($msg, $nick);
+}
+
 sub highlight {
+    if ($notify_chan eq 'never') {
+        return;
+    }
     my ($dest, $text, $msg) = @_;
     my $server = $dest->{server};
+    my $window = Irssi::active_win();
 
     # Check if we should notify user of message
     # if message is notice or highligh type
@@ -63,17 +93,27 @@ sub highlight {
         return;
     }
 
-    my $pid = fork();
-    Irssi::pidwait_add($pid);
-    if ($pid == 0) {
-        if ($^O eq "darwin") {
-            exec("terminal-notifier", "-message", "\\".$msg, "-title", "\\".$dest->{target});
-        }
-        else {
-            exec("notify-send", $dest->{target}, $msg);
-        }
+    if ($notify_chan eq 'active' && 
+          $window->{refnum} == $dest->{window}->{refnum}) {
+        return;
     }
+
+    send_notify($msg, $dest->{target});
 }
 
+Irssi::settings_add_str($IRSSI{name}, 'notify_priv', 'active');
+Irssi::settings_add_str($IRSSI{name}, 'notify_chan', 'always');
+
+Irssi::signal_add('setup changed' => \&setup);
 Irssi::signal_add_last('message private' => \&privmsg);
 Irssi::signal_add_last('print text' => \&highlight);
+
+Irssi::command_bind('help', sub {
+		if ($_[0] eq $IRSSI{name}) {
+			Irssi::print($help, MSGLEVEL_CLIENTCRAP);
+			Irssi::signal_stop();
+		}
+	}
+);
+
+setup();

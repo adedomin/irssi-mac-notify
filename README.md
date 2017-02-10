@@ -5,7 +5,18 @@ macOS (OS X) - Irssi
 
 Generic System which implements GNOME Desktop Notifications.
 
-Irssi is pretty much the only good irc client I know of for macOS
+Config
+------
+
+Below are ways ot configure when or if this plugin should notify.
+
+    /set notify_priv <level>
+    /set notify_chan <level>
+
+    where <level> is:
+        never  - never notify for these events
+        active - never notify for these events if the channel/user is the active window
+        always - anytime highlighed or private message, active window or not
 
 Depends
 -------
