@@ -42,8 +42,8 @@ where <level> is:
 ';
 
 sub setup {
-	$notify_chan = Irssi::settings_get_str('notify_chan');
-	$notify_priv = Irssi::settings_get_str('notify_priv');
+    $notify_chan = Irssi::settings_get_str('notify_chan');
+    $notify_priv = Irssi::settings_get_str('notify_priv');
 }
 
 sub send_notify {
@@ -109,11 +109,11 @@ Irssi::signal_add_last('message private' => \&privmsg);
 Irssi::signal_add_last('print text' => \&highlight);
 
 Irssi::command_bind('help', sub {
-		if ($_[0] eq $IRSSI{name}) {
-			Irssi::print($help, MSGLEVEL_CLIENTCRAP);
-			Irssi::signal_stop();
-		}
-	}
+        if ($_[0] eq $IRSSI{name}) {
+            Irssi::print($help, MSGLEVEL_CLIENTCRAP);
+            Irssi::signal_stop();
+        }
+    }
 );
 
 setup();
