@@ -55,7 +55,7 @@ sub send_notify {
             exec("terminal-notifier", "-message", "\\".$msg, "-title","\\".$title);
         }
         else {
-            exec("notify-send", $title, $msg);
+            exec("notify-send", "--", $title, $msg);
         }
     }
 }
