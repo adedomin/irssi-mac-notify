@@ -49,7 +49,6 @@ sub setup {
 sub send_notify {
     my ($msg, $title) = @_;
     my $pid = fork();
-    Irssi::pidwait_add($pid);
     if ($pid == 0) {
         if ($^O eq "darwin") {
             exec("terminal-notifier", "-message", "\\".$msg, "-title","\\".$title);
@@ -57,6 +56,9 @@ sub send_notify {
         else {
             exec("notify-send", "--", $title, $msg);
         }
+    }
+    else {
+        Irssi::pidwait_add($pid);
     }
 }
 
